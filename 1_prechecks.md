@@ -2,13 +2,37 @@
 ## Initial Setup
 	- Record local ip addresses in a file for scripting
 	- Setup SSH Keys across the cluster with Master 1 Private Key
+###### Disable SELinux after next reboot
+```
+sudo vim /etc/selinux/config
+```
+###### Set SELinux to Permissive Immediately
+```
+sudo setenforce 0
+```
 ### Install Packages
-	- sudo yum install -y nscd ntp vim wget bind-utils
+	- sudo yum install -y nscd ntp vim wget bind-utils telnet
 ### VM.SWAPPINESS
 	- created /etc/sysctl.d/cloudera_sysctl.conf
-	  vm.swappiness = 1 
+	  vm.swappiness=1 
 	- sudo cp /tmp/cloudera_sysctl.conf /etc/sysctl.d/
 	- sudo sysctl -p
+	- sudo sysctl vm.swappiness=1
+### Disable Transparent Huge Pages
+	- sudo bash -c "echo never > /sys/kernel/mm/transparent_hugepage/enabled"
+	- sudo bash -c "echo never > /sys/kernel/mm/transparent_hugepage/defrag"
+###### Disable at boot
+```
+Add to end of /etc/rc.d/rc.local
+
+#disable THP at boot time
+if test -f /sys/kernel/mm/transparent_hugepage/enabled; then
+  echo never > /sys/kernel/mm/transparent_hugepage/enabled
+fi
+if test -f /sys/kernel/mm/transparent_hugepage/defrag; then
+  echo never > /sys/kernel/mm/transparent_hugepage/defrag
+fi
+```
 ### NOATIME
 	- currently not using a non root volume
 ### Reserve Space
