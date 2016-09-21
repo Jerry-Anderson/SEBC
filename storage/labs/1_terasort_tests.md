@@ -84,3 +84,63 @@ real	6m59.002s
 user	0m9.830s
 sys	0m0.386s
 ```
+## Enable HDFS HA
+### Cloudera Manager
+
+###### Navigate to the HDFS page
+
+On the "Actions" button drop down, select "Enable High Availability
+
+###### Nameservice
+
+Enter "jerry-anderson"
+
+###### Assign Roles
+Namenodes
+
+	ip-172-31-29-173.ec2.internal 
+	ip-172-31-29-174.ec2.internal 
+	
+Journalnodes
+
+	ip-172-31-29-173.ec2.internal 
+	ip-172-31-29-174.ec2.internal 
+	ip-172-31-29-175.ec2.internal 
+	
+###### Review Configuration
+Journalnode edits directory
+
+	Enter directory for each Journalnode (/dfs/jn)
+	
+#### Configuring Hive for HDFS HA
+Stop Hue
+
+Stop Oozie
+
+Stop Hive
+
+Navigate to the Hive Service screen
+	
+	Actions Menu -> Update Hive Metastore NameNodes
+	
+#### Configuring Hue for HDFS HA
+###### Add the HttpFS Role
+HDFS -> Instances -> "Add Role Instance"
+
+Select a host for HttpFS (	ip-172-31-29-174.ec2.internal )
+
+Start HttpFS Role
+
+###### Configure Hue for HttpFS Role
+Hue -> Configuration
+
+Search for "HDFS Web Interface Role
+
+	Select HttpFS radio button
+
+###### Start Services
+Start Hive
+
+Start Hue
+
+Start Oozie
